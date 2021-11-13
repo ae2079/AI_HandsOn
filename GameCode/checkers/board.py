@@ -97,10 +97,12 @@ class Board:
                 right_moves = self._traverseRight(start, stop, 1, color, col+1)
             moves = dict(left_moves.items() + right_moves.items())
         else:
-            left_up_moves = self._traverseLeft()
-            left_down_moves = self._traverseLeft()
-            right_up_moves = self._traverseRight()
-            right_down_moves = self._traverseRight()
+            stop = min(start+2, ROWS)
+            left_up_moves = self._traverseLeft(start, stop, 1, color, col-1)
+            right_up_moves = self._traverseRight(start, stop, 1, color, col+1)
+            stop = max(start-2, 0)
+            left_down_moves = self._traverseLeft(start, stop, -1, color, col-1)
+            right_down_moves = self._traverseRight(start, stop, -1, color, col+1)
             moves = dict(left_up_moves.items() + left_down_moves.items() + right_up_moves.items() + right_down_moves.items())
         return moves
 
