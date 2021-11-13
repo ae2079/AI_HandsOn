@@ -9,32 +9,39 @@ WHITE = (255,255,255)
 
 def minimax(position, depth, maxPlayer, game):
     # Your Code Goes Here
-    board = game.getBoard()
+    board = position
+    #################
+    #for row in board.board:
+    #    print(row)
+    #print(depth)
+    ##################
     if depth <= 0:
+        #print("here")
         return board.evaluate(), board
     if maxPlayer:
         color = WHITE
     else:
         color = RED
-    all_moves = getAllMoves(game.board, color, game)
+    all_moves = getAllMoves(board, color, game)
     best_moves = []
-    for move in all_moves:
-        new_game = deepcopy(game)
-        simulateMove(move, new_game.board, new_game)
-        score, new_boad = minimax(position, depth-1, not maxPlayer, new_game)
-        best_moves.append([move, score])
+    for piece in all_moves:
+        for move in all_moves[piece]:
+            new_board = deepcopy(board)
+            simulateMove(piece, move, new_board, game, [])
+            score, new_board = minimax(new_board, depth-1, not maxPlayer, game)
+            best_moves.append([new_board, score])
 
     best_move = board
     if(maxPlayer):
-        best_score = 0
+        best_score = -MAX
         for move in best_moves:
-            if move[1] >= best_score:
+            if move[1] > best_score:
                 best_score = move[1]
                 best_move = move[0]
     else:
         best_score = MAX
         for move in best_moves:
-            if move[1] <= best_score:
+            if move[1] < best_score:
                 best_score = move[1]
                 best_move = move[0]
 
@@ -43,7 +50,7 @@ def minimax(position, depth, maxPlayer, game):
 
 def simulateMove(piece, move, board, game, skip):
     # Your Code Goes Here
-    game._move(move)
+    board.move(piece, move[0], move[1])
 
 def getAllMoves(board, color, game):
     # Your Code Goes Here
@@ -51,5 +58,5 @@ def getAllMoves(board, color, game):
     pieces = board.getAllPieces(color)
     for piece in pieces:
         curr_moves = board.getValidMoves(piece)
-        moves.update(curr_moves)
+        moves[piece] = curr_moves
     return moves

@@ -89,21 +89,19 @@ class Board:
         if not piece.king:
             if color == RED:
                 stop = max(start-2, 0)
-                left_moves = self._traverseLeft(start, stop, -1, color, col-1)
-                right_moves = self._traverseRight(start, stop, -1, color, col+1)
+                moves.update(self._traverseLeft(start, stop, -1, color, col-1))
+                moves.update(self._traverseRight(start, stop, -1, color, col+1))
             elif color == WHITE:
                 stop = min(start+2, ROWS)
-                left_moves = self._traverseLeft(start, stop, 1, color, col-1)
-                right_moves = self._traverseRight(start, stop, 1, color, col+1)
-            moves = dict(left_moves.items() + right_moves.items())
+                moves.update(self._traverseLeft(start, stop, 1, color, col-1))
+                moves.update(self._traverseRight(start, stop, 1, color, col+1))
         else:
             stop = min(start+2, ROWS)
-            left_up_moves = self._traverseLeft(start, stop, 1, color, col-1)
-            right_up_moves = self._traverseRight(start, stop, 1, color, col+1)
+            moves.update(self._traverseLeft(start, stop, 1, color, col-1))
+            moves.update(self._traverseRight(start, stop, 1, color, col+1))
             stop = max(start-2, 0)
-            left_down_moves = self._traverseLeft(start, stop, -1, color, col-1)
-            right_down_moves = self._traverseRight(start, stop, -1, color, col+1)
-            moves = dict(left_up_moves.items() + left_down_moves.items() + right_up_moves.items() + right_down_moves.items())
+            moves.update(self._traverseLeft(start, stop, -1, color, col-1))
+            moves.update(self._traverseRight(start, stop, -1, color, col+1))
         return moves
 
     def _traverseLeft(self, start, stop, step, color, left, skipped=[]):
