@@ -27,7 +27,7 @@ def minimax(position, depth, maxPlayer, game):
     for piece in all_moves:
         for move in all_moves[piece]:
             new_board = deepcopy(board)
-            simulateMove(piece, move, new_board, game, [])
+            simulateMove(piece, move, new_board, game, all_moves[piece][move])
             score, new_board = minimax(new_board, depth-1, not maxPlayer, game)
             best_moves.append([new_board, score])
 
@@ -50,7 +50,9 @@ def minimax(position, depth, maxPlayer, game):
 
 def simulateMove(piece, move, board, game, skip):
     # Your Code Goes Here
+    board.remove(skip)
     board.move(piece, move[0], move[1])
+
 
 def getAllMoves(board, color, game):
     # Your Code Goes Here
