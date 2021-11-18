@@ -1,1 +1,1 @@
-# AI_CA2
+# AI_HandsOn
